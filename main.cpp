@@ -1,12 +1,12 @@
 
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include <contactmodel.h>
-
+#include <contactitems.h>
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
-    qmlRegisterType<ContactModel>("ContactList", 1, 0, "ContactList");
+
+    qmlRegisterType<ContactItems>("ContactItems", 1, 0, "ContactItems");
     QQmlApplicationEngine engine;
     const QUrl url(u"qrc:/ContactsDisplay/Main.qml"_qs);
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

@@ -1,13 +1,13 @@
 import QtQuick
 import QtQuick.Window
-import ContactList
+import ContactItems
 Window {
     id: main
     visible: true
     title: qsTr("Hello World")
-    ListView {
-        id: contactList
-    }
+
+    property real captionFontSize : 12
+
     Row {
         id: titleRow
         anchors { leftMargin: 30 }
@@ -17,35 +17,58 @@ Window {
             font { pointSize: 30 }
         }
     }
-    Column {
-        anchors.top: titleRow.bottom
-        Rectangle {
-            id: avatar
-            width: 50
-            height: width
-            color: "orange"
-            border { color: "black"; width: 1 }
-            radius: width*0.5
-            Text {
-                anchors.centerIn : parent
-                color: "red"
-                text: "L"
-                font { pointSize: 26; bold: true}
-            }
-            Rectangle {
-                id: contactCard
-                anchors { left: avatar.right; leftMargin: 10}
-                width: 250
-                height: 50
-                border { color: "black"; width: 2}
-                radius: 5
 
+    ListView {
+        id: contactList
+        spacing: 10
+        anchors { fill: parent; topMargin: 50 }
+        model: ContactItems {}
+        delegate: listItem
+    }
+
+    Component {
+        id: listItem
+        Rectangle {
+            color: "gray"
+            height: 75
+            width: main.width
+                Rectangle {
+                    id: avatar
+                    width: 50
+                    height: width
+                    color: "orange"
+                    border { color: "black"; width: 1 }
+                    radius: width*0.5
+                    anchors { verticalCenter: parent.verticalCenter }
                 Text {
-                    id: contactName
-                    text: qsTr("Wilma Whitehead") // Contact Name
-                    font { pointSize: 22; }
-                    anchors { horizontalCenter: parent.horizontalCenter }
+                    anchors.centerIn : parent
+                    color: "red"
+                    text: model.ContactName[0]
+                    font { pointSize: 26; bold: true}
                 }
+                Rectangle {
+                    id: contactCard
+                    color: "transparent"
+                    anchors { left: avatar.right; leftMargin: 15 }
+                    width: 250 //Will need to make dynamic
+                    height: 75 //Will need to make dynamic
+                    Column {
+                        id: detailsColumn
+                        spacing: 2
+                        Text {
+                            id: contactName
+                            text: model.ContactName // Contact Name
+                            font { pointSize: 22; }
+                        }
+                        Text {
+                            id: contactPhone
+                            text: model.ContactPhone // Contact Number
+                            font { pointSize: captionFontSize; }
+                        }
+                    }
+                    Component.onCompleted: { console.log(model.ContactName[0]) }
+                }
+
             }
         }
     }
